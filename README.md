@@ -3,8 +3,11 @@
 
 ### 1. Overview
 配套yf-api-server使用到的 nodejs 客户端模块
+
 可以在nodejs应用中方便的使用yf-api-server的所有服务
+
 全局的命名空间为 FPC
+
 FPC.Query | FPC.Object | FPC.Function
 
 ### 2. Install
