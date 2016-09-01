@@ -1,6 +1,6 @@
 {
   "name": "fpc4n",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "fast platform client for nodejs",
   "main": "lib/core.js",
   "scripts": {

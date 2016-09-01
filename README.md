@@ -1,42 +1,129 @@
-### 通过该模块可以很快的调用所有的接口信息
+## fpc4n
+> client for fast platform
+
+### 1. Overview
+配套yf-api-server使用到的 nodejs 客户端模块
+可以在nodejs应用中方便的使用yf-api-server的所有服务
 全局的命名空间为 FPC
 FPC.Query | FPC.Object | FPC.Function
-基本使用模式为：
 
-var o = new FPC.Object('DATA');
+### 2. Install
+`
+$ npm install fpc4n --save
+`
 
-//设置对象的字段
-FPC.Object.set
-//获取对象的字段信息
-FPC.Object.get
-//创建一条新的数据，objectId会自动更新一下
-FPC.Object.create
-//更新数据
-FPC.Object.save
-//删除该数据
-FPC.Object.remove
+#### 2.1 Init
+```javascript
+var FPC = require("fpc4n");
+var client = FPC({endpoint:'http://192.168.1.115:8080/api',scope:'api',appkey:'609388a15b3dfaca',masterKey:'1292b2d414d45c8f97d44354de24c40c',v:'0.0.2'});
+```
 
---
+### 3. API
+---
+#### 3.1. 查询 query
 
-var q = new FPC.Query('DATA');
+##### 3.1.1 first
+```javascript
+var o = new FPC.Query('gr_test');
+o.first().then(function(data){
+    console.log(data);
+}).catch(function(err){
+    console.log(err);
+});
+```
 
-//设置查询的排序
-FPC.Query.sort
-//设置查询的分页
-FPC.Query.page
-//执行查询
-FPC.Query.find
-//执行查询，返回首条数据
-FPC.Query.first
-//执行查询，返回对应ID的数据
-FPC.Query.get
-//执行独立的sql语句
-FPC.Query.sql
+##### 3.1.2 getById
+```javascript
+var o = new FPC.Object('gr_test');
+o.getById(64).then(function(data){
+    console.log(data);
+}).catch(function(err){
+    console.log(err);
+});
+```
 
+##### 3.1.3 find
+```javascript
+var query = new FPC.Query('api_webevent');
+query.condition(" status > 0 ");
+query.find().then(function(list){
+    for(var l in list){
+        console.log(list[l]._d);
+    }
+}).catch(function(err){
+    console.log(err);
+});
+```
 
---
+##### 3.1.4 count
+```javascript
+var query = new FPC.Query('api_webevent');
+query.condition(" status > 0 ");
+query.count().then(function(c){
+    console.log(c);
+}).catch(function(err){
+    console.log(err);
+});
+```
 
-var f = new FPC.Function('udf');
-f.invoke();
-//调用自定的函数
-FPC.Function.call
+##### 3.1.5 findAndCount
+```javascript
+var query = new FPC.Query('api_webevent');
+query.condition(" status > 0 ");
+query.findAndCount().then(function(data){
+    console.log(data.rows);
+    console.log(data.count);
+}).catch(function(err){
+    console.log(err);
+});
+```
+
+##### 3.1.6 clear
+```javascript
+var query = new FPC.Query('api_webevent');
+query.condition(" status > 0 ");
+query.clear().then(function(data){
+    console.log(data);
+}).catch(function(err){e
+    console.log(err);
+});
+```
+
+---
+#### 3.2. 创建 create
+```javascript
+var o = new FPC.Object('gr_test');
+o.set({name:'hhh'})
+o.create().then(function(data){
+    console.log(data);
+}).catch(function(err){
+    console.log(err);
+});
+```
+
+---
+#### 3.3. 删除 remove
+```javascript
+var o = new FPC.Object('gr_test');
+o.getById(64).then(function(data){
+    o.remove().then(function(flag){
+      // flag should be 1
+    });
+}).catch(function(err){
+    console.log(err);
+});
+```
+
+---
+#### 3.4. 更新 save
+```javascript
+var o = new FPC.Object('gr_test');
+o.getById(64).then(function(data){
+    o.set('val','test');
+    o.save().then(function(flag){
+      // flag should be 1
+    });
+}).catch(function(err){
+    console.log(err);
+});
+```
