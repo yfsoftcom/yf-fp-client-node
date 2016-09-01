@@ -1,5 +1,5 @@
 var should = require("should");
-var AE = require("../lib/core")({mode:'STAGING',scope:'api',appkey:'45883198abcdc107',masterKey:'1b7e5703602b6fce1cae7364ac0f2244'});
+var FPC = require("../lib/core")({endpoint:'http://192.168.1.115:8080/api',scope:'api',appkey:'609388a15b3dfaca',masterKey:'1292b2d414d45c8f97d44354de24c40c',v:'0.0.1'});
 describe('Query', function(){
     //it('first', function(done){
     //    var query = new AE.Query('lantern_personal_center');
@@ -15,7 +15,7 @@ describe('Query', function(){
     //});
 
     it('find', function(done){
-        var query = new AE.Query('api_webevent');
+        var query = new FPC.Query('api_webevent');
         query.and(" status>0 ");
         query.find().then(function(data){
             console.log(data);

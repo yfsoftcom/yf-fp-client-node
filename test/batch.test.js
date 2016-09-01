@@ -1,10 +1,10 @@
 var should = require("should");
-var AE = require("../lib/core")({scope:'activity'});
+var PFC = require("../lib/core")({scope:'activity'});
 describe('Batch', function(){
     it('call Batch', function(done){
-        var o1 = new AE.Object('gr_test',{'name':'f1'});
-        var o2 = new AE.Object('gr_test',{'name':'f2'});
-        var batch = new AE.Batch();
+        var o1 = new PFC.Object('gr_test',{'name':'f1'});
+        var o2 = new PFC.Object('gr_test',{'name':'f2'});
+        var batch = new PFC.Batch();
         batch.insert([o1,o2]).then(function(data){
             console.log(data);
             done();

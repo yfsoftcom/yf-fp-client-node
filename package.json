@@ -1,22 +1,24 @@
 {
-  "name": "apiengine",
+  "name": "fpc4n",
   "version": "3.0.0",
-  "description": "",
+  "description": "fast platform client for nodejs",
   "main": "lib/core.js",
   "scripts": {
     "test": "mocha test/*.test.js"
   },
   "keywords": [
-    "apiengine"
+    "fpc,fast,fast platform,api,fast api"
   ],
-  "author": "yfdever",
+  "author": "yfsoftcom",
   "license": "MIT",
   "dependencies": {
     "async": "^1.5.2",
-    "mocha": "^2.4.5",
+    "lodash": "^4.15.0",
     "q": "^1.4.1",
-    "restify": "^4.0.4",
-    "should": "^8.2.2",
-    "underscore": "^1.8.3"
+    "request": "^2.74.0"
+  },
+  "devDependencies": {
+    "mocha": "^3.0.2",
+    "should": "^8.2.2"
   }
 }

@@ -1,8 +1,8 @@
 var should = require("should");
-var AE = require("../lib/core")({mode:'STAGING',scope:'api',appkey:'45883198abcdc107',masterKey:'1b7e5703602b6fce1cae7364ac0f2244'});
+var FPC = require("../lib/core")({endpoint:'http://192.168.1.115:8080/api',scope:'api',appkey:'609388a15b3dfaca',masterKey:'1292b2d414d45c8f97d44354de24c40c',v:'0.0.2'});
 describe('Function', function(){
     it('call function', function(done){
-        var func = new AE.Function('common.foo');
+        var func = new FPC.Function('foo.test');
         func.invoke({123:123}).then(function(data){
             console.log(data);
             done();

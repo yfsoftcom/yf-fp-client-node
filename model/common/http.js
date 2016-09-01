@@ -1,13 +1,15 @@
 'use strict';
 var Q = require('q');
 var crypto = require('crypto');
-var restify = require('restify');
-var _ = require('underscore');
+var _ = require('lodash');
+var request = require('request');
 
-var config = {
-    DEV:'http://localhost:8080',
-    STAGING:'http://61.147.98.134:8080',
-    PRODUCT:'http://api.guoran100.com:9001'
+var _options = {
+    mode:'DEV',
+    appkey:'',
+    masterKey:'',
+    v:'0.0.1',
+    endpoint:'http://localhost:8080/api'
 };
 
 /**
@@ -36,32 +38,49 @@ function signParams (args){
     return d;
 }
 
+
 module.exports = function(option){
-    var client = restify.createJsonClient({
-        url: config[option.mode || 'DEV']
-    });
+  option = _.extend(_options,option);
     return {
         exec:function(action,args){
+          var endpoint = option.endpoint;
+
             var deferred = Q.defer();
-            delete args['scope'];
-            var arr = {method:action,appkey:option.appkey,masterKey:option.masterKey,timestamp:new Date().getTime(),param:args};
+            delete args.scope;
+
+            //这里如果 action 传入的是object 带有版本号，则需要进行转换
+            var v = _options.v;
+            if(_.isObject(action)){
+              v = action.v || v;
+              action = action.action;
+            }else if(_.isString(action)){
+              var pos = action.indexOf('@');
+              if(pos > 1){
+                v = action.substr(pos + 1);
+                action = action.substr(0,pos);
+              }
+            }
+            var arr = {method:action,appkey:option.appkey,masterKey:option.masterKey,timestamp: _.now(),param:JSON.stringify(args),v:v};
             var sign = signParams(arr);
             arr.sign = sign;
             delete arr.masterKey;
-            client.post('/api',arr, function (err, request, response, obj) {
-                if(err){
-                    deferred.reject(err);
+            console.log(arr);
+            request.post(endpoint,{form:arr},function(err,r,obj){
+              if(!_.isObject(obj)){
+                obj = JSON.parse(obj);
+              }
+              if(err){
+                deferred.reject(err);
+              }else{
+                if(obj.errno != 0){
+                    deferred.reject(obj);
                 }else{
-                    //TODO:判断接口逻辑的错误代码
-                    if(obj.errno==0){
-                        deferred.resolve(obj.data);
-                    }else{
-                        deferred.reject(obj);
-                    }
+                    deferred.resolve(obj.data);
                 }
+              }
+
             });
             return deferred.promise;
         }
     };
 };
-
