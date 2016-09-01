@@ -1,0 +1,22 @@
+{
+  "name": "apiengine",
+  "version": "3.0.0",
+  "description": "",
+  "main": "lib/core.js",
+  "scripts": {
+    "test": "mocha test/*.test.js"
+  },
+  "keywords": [
+    "apiengine"
+  ],
+  "author": "yfdever",
+  "license": "MIT",
+  "dependencies": {
+    "async": "^1.5.2",
+    "mocha": "^2.4.5",
+    "q": "^1.4.1",
+    "restify": "^4.0.4",
+    "should": "^8.2.2",
+    "underscore": "^1.8.3"
+  }
+}
